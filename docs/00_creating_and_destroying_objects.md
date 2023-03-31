@@ -127,8 +127,20 @@ Declaring the pattern as a stativ cariable does not only increase performance, b
 Prefer primitives to boxed primitives and watch out for unintentional autoboxing.
 
 
-### 7. Eliminate obsolete object references
+### 7. Eliminate obsolete object references - Requires re-visiting
 
 
-### 8. Avoid finalizers and cleaners 
-Finalizers are **deprecated** as of Java 9.
+### 8. Avoid finalizers and cleaners - requires revisiting
+Finalizers are **deprecated** as of Java 9. The replacement for finalizers is **cleaners**, but still unpredictable, slow, and generally unnecessary.
+
+...
+
+Instead of using finalizers/closers, you can just have your class implement **AutoCloseable** and require its clients to invoke the *close* method on each instance when it is no longer needed.
+Closers can still be used as a safety net for classes which implement the AutoCloseable interface (see `Room`).
+
+
+### 9. Prefer `try-with-resources` to `try-finally`
+
+Why? The code in the finally block may be capable of throwing exceptions.
+
+If you write a class that represents a resource that must be closed, your class should implement `AutoCloseable` too.
